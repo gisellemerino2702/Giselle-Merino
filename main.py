@@ -22,9 +22,9 @@ def total(linea):
     return tot
 
 def final():
-    print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
     for lineas in sys.stdin:
         resultado = total(lineas)
+        print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
         print(resultado)
 
 if __name__ == "main":
