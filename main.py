@@ -5,12 +5,12 @@ for line in sys.stdin: # se recorre cada linea que llega desde stdin y el progra
     if line == "":
         print(0) #si la linea esta vacia o solo tiene espacios imprime 0 y continua a la siguiente linea.
         continue 
-    valores = line.split(",") #separamos los elementos por comas.
-    suma = 0 
-    for valor in valores: 
-        valor = valor.strip() #elimina espacios antes y despues de cada valor.
+    elementos = line.split(",") #separamos los elementos por comas.
+    suma_linea = 0 
+    for elemento in elementos: 
+        elemnto = elemento.strip() #elimina espacios antes y despues de cada valor.
         limpio = "" #limpia caracteres invalidos.
-        for c in valor:
+        for c in elemento:
             if c.isdigit() or c == "." or c == "-":
                 limpio += c
         if limpio == "" or limpio == "-" or limpio == ".":
@@ -18,6 +18,6 @@ for line in sys.stdin: # se recorre cada linea que llega desde stdin y el progra
         else:
             numero = float(limpio)
         numero = int(numero)  #truncar decimales        
-        suma += numero #suma todos los valores
+        suma_linea += numero #suma todos los valores
 
-print(suma)
+print(suma_linea)
