@@ -1,6 +1,7 @@
 import sys #para leer datos desde la entrada (stdin).
 print(f"INGRESE VALORES SEPARADOS POR COMAS: \n")
-for line in sys.stdin: # se recorre cada linea que llega desde stdin y el programa seguira leyendo hasta llegar al fin del archivo.
+lines = sys.stdin.read().splitlines()
+for line in lines: # se recorre cada linea que llega desde stdin y el programa seguira leyendo hasta llegar al fin del archivo.
     line = line.strip() #elimina espacios al inicio y al final de la linea.
     if line == "":
         print(0) #si la linea esta vacia o solo tiene espacios imprime 0 y continua a la siguiente linea.
