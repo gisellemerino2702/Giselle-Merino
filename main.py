@@ -1,23 +1,30 @@
 import sys #para leer datos desde la entrada (stdin).
-print(f"INGRESE VALORES SEPARADOS POR COMAS: \n")
-for linea in sys.stdin: # se recorre cada linea que llega desde stdin y el programa seguira leyendo hasta llegar al fin del archivo.
-    linea = linea.strip() #elimina espacios al inicio y al final de la linea.
+import re #limpiar caracteres invalidos.
+def sacar_num(texto):
+    texto = texto.strip()
+    limpio = re.sub(r"[^0-9\.-]", "", texto)
+    if limpio == "" or limpio == "-" or limpio == ".":
+        return 0
+    
+    try:
+        int(float(limpio))
+    except: 
+        return 0
+    
+def total(linea):
+    linea = linea.strip()
     if linea == "":
-        print(0) #si la linea esta vacia o solo tiene espacios imprime 0 y continua a la siguiente linea.
-        continue 
-    valores = linea.split(",") #separamos los elementos por comas.
-    suma = 0 
-    for valor in valores: 
-        valor = valor.strip() #elimina espacios antes y despues de cada valor.
-        limpio = "" #limpia caracteres invalidos.
-        for c in valor:
-            if c.isdigit() or c == "." or c == "-":
-                limpio += c
-        if limpio == "" or limpio == "-" or limpio == ".":
-            numero = 0
-        else:
-            numero = float(limpio)
-        numero = int(numero)  #truncar decimales        
-        suma += numero #suma todos los valores
+        return 0
+    parte = linea.split(",")
+    tot = 0
+    for p in parte:
+        tot += sacar_num(p)
+    return tot
 
-print(suma)
+def final():
+    for lineas in sys.stdin:
+        resultado = total(lineas)
+        print(resultado)
+
+if __name__ == "main":
+    final()
