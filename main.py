@@ -7,7 +7,7 @@ def sacar_num(texto):
         return 0
     
     try:
-        int(float(limpio))
+        return int(float(limpio))
     except: 
         return 0
     
@@ -18,13 +18,15 @@ def total(linea):
     parte = linea.split(",")
     tot = 0
     for p in parte:
-        tot += sacar_num(p)
+        valor = sacar_num(p)
+        tot += valor
     return tot
-print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
+
 def final(*args):
     for lineas in sys.stdin:
         resultado = total(lineas)
-        print(resultado)
+        print(f"Resultados: {resultado}")
 
 if __name__ == "__main__":
+    print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
     final()
