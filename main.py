@@ -26,5 +26,5 @@ def final():
         resultado = total(lineas)
         print(resultado)
 
-if __name__ == "main":
+if __name__ == "__main__":
     final()
