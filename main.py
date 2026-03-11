@@ -21,7 +21,7 @@ def total(linea):
         tot += sacar_num(p)
     return tot
 print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
-def final():
+def final(*args):
     for lineas in sys.stdin:
         resultado = total(lineas)
         print(resultado)
