@@ -20,11 +20,10 @@ def total(linea):
     for p in parte:
         tot += sacar_num(p)
     return tot
-
+print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
 def final():
     for lineas in sys.stdin:
         resultado = total(lineas)
-        print(f"INGRESE LOS VALORES SEPARADOS POR COMAS: \n")
         print(resultado)
 
 if __name__ == "main":
