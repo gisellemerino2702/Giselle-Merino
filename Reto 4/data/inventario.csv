@@ -1,0 +1,8 @@
+sku,nombre,categoria,precio,stock,stock_minimo
+SKU101,Tablet Samsung,Electronica,8000.00,4,10
+SKU102,Cargador USB,Cables,250.00,2,20
+SKU103,Bocina Bluetooth,Audio,N/A,15,10
+SKU104,Disco Duro Externo,Almacenamiento,1500.00,xyz,5
+SKU105,Smartwatch Xiaomi,Wearables,3000.00,1,???
+SKU106,Camara Web Pro,Video
+SKU107,Memoria USB 64GB,Almacenamiento,200.00,0,10,extra
