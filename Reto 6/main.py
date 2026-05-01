@@ -4,7 +4,7 @@ from datetime import datetime
 import csv
 
 DEPARTAMENTOS_VALIDOS = ['VEN', 'ADM', 'TEC', 'LOG', 'RHH']
-SERIES_VALIDAS = ['A', 'B', 'C', 'C', 'D', 'E']
+SERIES_VALIDAS = ['A', 'B', 'C', 'D', 'E']
 
 def validar_producto(codigo: str) -> Dict:
     resultado = {
@@ -46,7 +46,7 @@ def validar_envio(codigo: str) -> Dict:
         
         resultado["valido"] = True
         resultado["fecha"] = f"{anio}-{mes}-{dia}"
-        resultado["secuencia"] = sec
+        resultado["secuencial"] = sec
     
     return resultado
 
@@ -110,10 +110,12 @@ def validar_codigo(codigo: str) -> Dict:
         resultado["tipo"] = "factura"
         res = validar_factura(codigo)
 
-    else: 
+    elif re.match(r'^[A-Z]{3}-', codigo):
+        resultado["tipo"] = "producto"
         res = validar_producto(codigo)
-        if res["valido"] or re.match(r'^[A-Za-z]{3}-', codigo):
-            resultado["tipo"] = "producto"
+    
+    else: 
+        res = {"valido" : False}
     
     resultado["valido"] = res["valido"]
 
@@ -157,6 +159,36 @@ def procesar_lote(codigos: List[str]) -> Dict:
 
     return resultado
 
+def mostrar_resultado(resultado: Dict) -> None:
+    estado = "✓" if resultado["valido"] else "✗"
+    print(f"{estado} {resultado['codigo'] :<30} | Tipo: {resultado['tipo']:<12}")
+
+    if resultado["valido"] and resultado["detalles"]:
+        detalles = ", ".join(
+            f"{k}: {v}" for k, v in resultado["detalles"].items() if v
+        )
+        print(f"   └── {detalles}")
+
+def mostrar_reporte(reporte: Dict) -> None:
+    print("=" * 60)
+    print("                 REPORTE DE VALIDACION")
+    print("=" * 60)
+
+    print(f"\n Total procesados: {reporte['total']}")
+    print(f"Validos: {reporte['validos']} ({reporte['validos']/reporte['total'] * 100:.1f}%)")
+    print(f"Invalidos: {reporte['invalidos']} ({reporte['invalidos']/reporte['total'] * 100:.1f}%)")
+
+    print("\n Desglose por tipo:")
+    print("-" * 40)
+
+    for tipo, stats in reporte["por_tipo"].items():
+        if stats["total"] > 0:
+            tasa = stats["validos"] / stats["total"] * 100
+            print(f"   {tipo.capitalize():<12}: {stats['validos']:>3}/{stats['total']:<3} ({tasa:.0f}% validos)")
+
+    print("\n" + "=" * 60)
+
+
 def sugerir_correccion(codigo: str) -> str:
     return codigo.upper()
 
@@ -179,3 +211,49 @@ def exportar_resultados(reporte: Dict, archivo: str) -> None:
                 item["valido"],
                 str(item["detalles"])
             ])
+
+
+if __name__ == "__main__":
+
+    CODIGOS_PRUEBA = [
+    # Productos
+    "TEC-0001-MX",
+    "ALI-9999-US",
+    "ROB-1234-CA",
+    "tec-0001-MX",
+    "TEC-001-MX",
+    "TECH-0001-MX",
+
+    # Envíos
+    "ENV-2024-03-15-001234",
+    "ENV-2025-12-01-999999",
+    "ENV-2019-03-15-001234",
+    "ENV-2024-13-15-001234",
+    "ENV-2024-03-32-001234",
+
+    # Empleados
+    "EMP-VEN-1234",
+    "EMP-TEC-9999",
+    "EMP-ADM-1000",
+    "EMP-VEN-0123",
+    "EMP-XXX-1234",
+    "EMP-VEN-123",
+
+    # Facturas
+    "FAC-A-123456",
+    "FAC-E-000001",
+    "FAC-B-999999",
+    "FAC-F-123456",
+    "FAC-A-12345",
+    "FAC-a-123456",
+
+    # Desconocidos
+    "XXX-1234",
+    "RANDOM-CODE"
+]
+    print(len(CODIGOS_PRUEBA))
+
+    reporte = procesar_lote(CODIGOS_PRUEBA)
+    mostrar_reporte(reporte)
+    exportar_resultados(reporte, "resultados.csv")
+    
