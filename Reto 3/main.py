@@ -53,12 +53,12 @@ def main():
         reverse=True
     )
 
-    print("Producto, Vendido, Total_ingresado, Promedio")
+    print("producto,unidades_vendidas,ingreso_total,precio_promedio")
 
     for nombre, datos in lista_ordenada:
 
         unidades = datos["Unidades"]
-        unidades = datos["Ingreso"]
+        ingreso = datos["Ingreso"]
         promedio = datos["promedio"]
 
         print(f"{nombre},{unidades},{ingreso:.2f},{promedio:.2f}")
