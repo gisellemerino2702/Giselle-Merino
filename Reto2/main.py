@@ -11,6 +11,8 @@ def clasificar_temperatura(celsius):
     elif celsius <= 15:
         return "Frio"
     elif celsius <= 25:
+        return "Templado"
+    elif celsius <= 35:
         return "Calido"
     else:
         return "Extremo"
@@ -18,7 +20,7 @@ def clasificar_temperatura(celsius):
 def main():
     lineas = sys.stdin.read().strip().split("\n")
 
-    print("\nCiudad, temperatura_celsius, clasificacion")
+    print("ciudad,temperatura_celsius,clasificacion")
 
     for linea in lineas [1:]:
         partes = linea.split(",")
@@ -27,9 +29,13 @@ def main():
             continue
         ciudad, temp_str, unidad = partes
 
+        ciudad = ciudad.strip()
+        temp_str = temp_str.strip()
+        unidad = unidad.strip().upper()
+
         try:
             temperatura = float(temp_str) 
-        except: 
+        except ValueError: 
             continue
 
         if unidad not in ["C", "F"]:
