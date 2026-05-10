@@ -1,0 +1,3 @@
+sku,nombre,categoria,stock_actual,stock_minimo,unidades_faltantes,valor_inventario
+SKU102,Cargador USB,Cables,2,20,18,500.00
+SKU101,Tablet Samsung,Electronica,4,10,6,32000.00

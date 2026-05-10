@@ -1,13 +1,20 @@
-DESCRIPCION:
+# Sistema de Inventario con Clase `Producto`
 
-Sistema que genera reportes de productos que necesitan reorden apartir de un archivo csv.
-El sistema:
--Valida los datos
--Ignora registros incorrectos
--Detecta productos con stock bajo
--Genera reporte de reorden
+## Descripción
 
-ESTRUCTURA DEL PROYECTO:
+Este proyecto implementa una clase llamada `Producto` en Python para representar productos dentro de un inventario.
+
+La clase permite:
+
+- Registrar información básica de un producto.
+- Verificar si necesita reabastecimiento.
+- Calcular unidades faltantes.
+- Obtener el valor total del inventario.
+- Mostrar información legible del producto.
+
+---
+
+## Esctructura del proyecto
 
 reto-semana-04/
 ├── main.py
@@ -25,42 +32,112 @@ reto-semana-04/
 └── outputs/
     └── reporte_inventario.csv
 
+---    
 
-COMO EJECUTAR: 
+## Estructura de la Clase
 
-py main.py
+La clase `Producto` contiene los siguientes atributos:
 
-ENTRADA:
+| Atributo | Descripción |
+|---|---|
+| `sku` | Identificador único del producto |
+| `nombre` | Nombre del producto |
+| `categoria` | Categoría del producto |
+| `precio` | Precio unitario |
+| `stock` | Cantidad disponible |
+| `stock_minimo` | Nivel mínimo permitido |
 
-data/inventario.csv
+---
 
-csv:
-sku,nombre,categoria,precio,stock,stock_minimo
-SKU101,Tablet Samsung,Electronica,8000.00,4,10
-SKU102,Cargador USB,Cables,250.00,2,20
-SKU103,Bocina Bluetooth,Audio,N/A,15,10
-SKU104,Disco Duro Externo,Almacenamiento,1500.00,xyz,5
-SKU105,Smartwatch Xiaomi,Wearables,3000.00,1,???
-SKU106,Camara Web Pro,Video
-SKU107,Memoria USB 64GB,Almacenamiento,200.00,0,10,extra
+## Métodos
 
+### `necesita_reorden()`
 
-SALIDA:
+Verifica si el producto necesita reabastecimiento.
 
-Archivo: outputs/reporte_inventario.csv
+```python
+producto.necesita_reorden()
+```
 
-csv:
-sku,nombre,categoria,stock_actual,stock_minimo,unidades_faltantes,valor_inventario
-SKU102,Cargador USB,Cables,2,20,18,500.00
-SKU101,Tablet Samsung,Electronica,4,10,6,32000.00
+Retorna:
 
-AUTOR: 
+- `True` si el stock es menor al mínimo.
+- `False` en caso contrario.
 
-Gladys Giselle Merino Galindo
+---
 
-FECHA DE ENTREGA:
+### `unidades_faltantes()`
 
-Viernes de la semana 4, 23:59 hrs
+Calcula cuántas unidades faltan para alcanzar el stock mínimo.
 
+```python
+producto.unidades_faltantes()
+```
 
+---
+
+### `valor_inventario()`
+
+Calcula el valor total del inventario del producto.
+
+```python
+producto.valor_inventario()
+```
+
+Fórmula:
+
+```python
+precio * stock
+```
+
+---
+
+### `__str__()`
+
+Muestra información legible del producto.
+
+Ejemplo:
+
+```python
+[OK] A001: Laptop - Stock: 15/10
+```
+
+o
+
+```python
+[REORDEN] A001: Laptop - Stock: 5/10
+```
+
+---
+
+## Ejemplo de Uso
+
+```python
+producto = Producto(
+    "A001",
+    "Laptop",
+    "Electrónica",
+    15000.0,
+    5,
+    10
+)
+
+print(producto)
+
+print(producto.necesita_reorden())
+print(producto.unidades_faltantes())
+print(producto.valor_inventario())
+```
+
+---
+
+## Requisitos
+
+- Python 3.x
+
+---
+
+## Autor
+
+Proyecto desarrollado en Python para práctica de Programación Orientada a Objetos (POO).
 
