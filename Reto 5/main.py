@@ -1,5 +1,6 @@
 import argparse
 import sys
+import os
 
 def es_valor_nulo(valor):
     if valor is None:
@@ -21,17 +22,23 @@ def es_fecha(valor):
     if len(v) >= 10 and v[4] == '-' and v[7] == '-':
         try:
             partes = v[:10].split('-')
-            año = int(partes[0])
+            anio = int(partes[0])
             mes = int(partes[1])
             dia = int(partes[2])
-            return  1900 <= año <= 2100 and 1 <= mes <= 12 and 1 <= dia <= 31
-        except:
-            pass
+            return  1900 <= anio <= 2100 and 1 <= mes <= 12 and 1 <= dia <= 31
+        except (ValueError, IndexError):
+            return False
     return False
 
 def es_booleano(valor):
     v = str(valor).strip().lower()
-    return v in ['true', 'false', 'yes', 'no', 'si', '1', '0', 't', 'f']
+    return v in [
+        'true', 'false', 
+        'yes', 'no',
+        'si',
+        '1', '0',
+        't', 'f'
+    ]
 
 def inferir_tipo(valores):
     valores_validos = [v for v in valores if not es_valor_nulo(v)]
@@ -59,16 +66,24 @@ def perfilar_columna(nombre, valores):
     total = len(valores)
     nulos = sum(1 for v in valores if not es_valor_nulo(v))
 
-    valores_no_nulos = [v for v in valores if not es_valor_nulo(v)]
+    valores_no_nulos = [
+        v for v in valores
+        if not es_valor_nulo(v)
+    ]
 
     unicos = len(set(valores_no_nulos))
     ejemplo = valores_no_nulos[0] if valores_no_nulos else ""
 
     tipo = inferir_tipo(valores)
 
-    porcentaje_nulos = round((nulos / total) * 100, 2) if total > 0 else 0.00
-    porcentaje_unicos = round((unicos / total) * 100, 2) if total > 0 else 0.00
-
+    porcentaje_nulos = (
+        round((nulos / total) * 100, 2) 
+        if total > 0 else 0.00
+    )
+    porcentaje_unicos = (
+        round((unicos / total) * 100, 2) 
+        if total > 0 else 0.00
+    )
     return{
         "nombre_columna" : nombre,
         "tipo_inferido" : tipo,
@@ -103,7 +118,7 @@ def escribir_csv(ruta, perfiles):
     columnas = [
         "nombre_columna", "tipo_inferido", "total_registros",
         "valores_nulos", "porcentaje_nulos", "valores_unicos",
-        "porcentajes_unicos", "ejemplo_valor"
+        "porcentaje_unicos", "ejemplo_valor"
     ]
 
     with open(ruta, 'w', encoding= 'utf-8') as f:
@@ -145,6 +160,8 @@ def main():
     for i, col in enumerate(encabezados):
         valores = [fila[i] if i < len(fila) else "" for fila in filas]
         perfiles.append(perfilar_columna(col, valores))
+    
+    os.makedirs(os.path.dirname(args.output), exist_ok=True)
 
     escribir_csv(args.output, perfiles)
 
