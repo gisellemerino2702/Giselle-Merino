@@ -1,4 +1,5 @@
 import sys 
+import math
 def main():
     productos = {}
 
@@ -23,6 +24,10 @@ def main():
         try:
             cantidad = int(cantidad_str)
             precio = float(precio_str)
+
+            if not math.isfinite(precio):
+                continue
+            
         except ValueError:
             continue
 
