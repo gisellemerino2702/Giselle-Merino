@@ -7,8 +7,13 @@ ARCHIVO_REPORTE = "outputs/reporte_inventario.csv"
 
 def crear_productos(datos_raw):
     productos = []
+    skus_vistos = set()
 
     for d in datos_raw:
+
+        if d.get("sku") in skus_vistos:
+            continue
+
         valido, error = validar_producto(
             d.get("sku"),
             d.get("nombre"),
@@ -32,6 +37,7 @@ def crear_productos(datos_raw):
         )
 
         productos.append(producto)
+        skus_vistos.add(d["sku"])
 
     return productos
 
@@ -39,7 +45,11 @@ def filtrar_reorden(productos):
     return[p for p in productos if p.necesita_reorden()]
 
 def ordenar(productos):
-    return sorted(productos, key=lambda p: p.unidades_faltantes(), reverse=True)
+    return sorted(
+        productos, 
+        key=lambda p: p.unidades_faltantes(), 
+        reverse=True
+    )
 
 def main():
     print("=====SISTEMA DE INVENTARIO=====")

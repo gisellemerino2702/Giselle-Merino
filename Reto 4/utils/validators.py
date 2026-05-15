@@ -1,16 +1,20 @@
+import math
+
 def validar_sku(sku):
     return bool(sku and str(sku).strip())
 
 def validar_precio(precio):
     try:
-        return float(precio) >= 0
+        precio =  float(precio)
+        return math.isfinite(precio) and precio >= 0
     except: 
         return False
     
 
 def validar_stock(stock):
     try:
-        return int(stock) >= 0
+        stock = int(stock)
+        return stock >= 0
     except: 
         return False
     
